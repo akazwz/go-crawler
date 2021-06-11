@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	real_life_examples "github.com/akazwz/go-crawler/real-life-examples"
+	"github.com/akazwz/go-crawler/douban"
 )
 
 func main() {
@@ -21,5 +21,6 @@ func main() {
 	// examples.RequestContext()
 	// examples.ScraperServer()
 	// examples.URLFilter()
-	real_life_examples.CryptocoinsMarketCapacity()
+	// real_life_examples.CryptocoinsMarketCapacity()
+	douban.Movies()
 }
