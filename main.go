@@ -7,5 +7,9 @@ func main() {
 	// examples.ErrorHandling()
 	// examples.Login()
 	// examples.MaxDepth()
-	examples.Multipart()
+	// examples.Multipart()
+	// examples.Parallel()
+	// examples.ProxySwitcher()
+	// examples.Queue()
+	examples.RandomDelay()
 }
