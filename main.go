@@ -6,5 +6,6 @@ func main() {
 	// examples.Basic()
 	// examples.ErrorHandling()
 	// examples.Login()
-	examples.MaxDepth()
+	// examples.MaxDepth()
+	examples.Multipart()
 }
