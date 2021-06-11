@@ -11,14 +11,23 @@ func parseDetail(c *colly.Collector, href string) {
 	c = c.Clone()
 	c.OnHTML("body", func(e *colly.HTMLElement) {
 		content := e.DOM.Find("div#content")
+		src, _ := content.Find("div#mainpic > a > img").Attr("src")
 		rangeNo := content.Find("div.top250 > span.top250-no").Text()
 		movieName := content.Find("h1 > span").First().Text()
 		year := content.Find("h1 > span.year").Text()
+
+		//director := content.Find("div#info > span").Slice(0, 1).Find("span.attrs > a").Text()
+		content.Find("div#info > span").Slice(1, 2).
+			Find("span.attrs > a").Each(func(i int, selection *goquery.Selection) {
+			screenWriter := selection.Text()
+			log.Println("编剧:", screenWriter)
+		})
+
 		// 剧情获取有多个span,个数不确定,最少为两个最后一个为 @豆瓣,不需要,remove,取最后一个的全部详情
 		content.Find("div#link-report > span").Last().Remove()
 		reportSpans := content.Find("div#link-report > span")
 		introduction := reportSpans.Last().Text()
-		log.Println("\n排名:", rangeNo, "\n电影名:", movieName, "\n年份:", year, "\n剧情简介:", introduction)
+		log.Println("\n排名:", rangeNo, "\n电影名:", movieName, "\n海报图片:", src, "\n年份:", year, "\n剧情简介:", introduction)
 
 		ul := content.Find("div#celebrities > ul")
 		log.Println("演职员:")
