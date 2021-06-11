@@ -1,7 +1,5 @@
 package main
 
-import "github.com/akazwz/go-crawler/examples"
-
 func main() {
 	// examples.Basic()
 	// examples.ErrorHandling()
@@ -11,5 +9,7 @@ func main() {
 	// examples.Parallel()
 	// examples.ProxySwitcher()
 	// examples.Queue()
-	examples.RandomDelay()
+	// examples.RandomDelay()
+	// examples.RateLimit()
+	// examples.RedisBackend()
 }
