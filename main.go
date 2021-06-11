@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/akazwz/go-crawler/examples"
+	real_life_examples "github.com/akazwz/go-crawler/real-life-examples"
 )
 
 func main() {
@@ -20,5 +20,6 @@ func main() {
 	// examples.RedisBackend()
 	// examples.RequestContext()
 	// examples.ScraperServer()
-	examples.URLFilter()
+	// examples.URLFilter()
+	real_life_examples.CryptocoinsMarketCapacity()
 }
