@@ -52,8 +52,6 @@ func parseBookDetail(c *colly.Collector, href string) {
 			"\n排名:", rangeNo,
 			"\n书名:", bookName,
 			"\n图书封面:", bookImg,
-			"\ninfoText:", infoText,
-			"\nsplit:", split,
 		)
 	})
 
