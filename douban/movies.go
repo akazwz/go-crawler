@@ -16,11 +16,19 @@ func parseDetail(c *colly.Collector, href string) {
 		movieName := content.Find("h1 > span").First().Text()
 		year := content.Find("h1 > span.year").Text()
 
-		//director := content.Find("div#info > span").Slice(0, 1).Find("span.attrs > a").Text()
+		// director := content.Find("div#info > span").Slice(0, 1).Find("span.attrs > a").Text()
 		content.Find("div#info > span").Slice(1, 2).
 			Find("span.attrs > a").Each(func(i int, selection *goquery.Selection) {
 			screenWriter := selection.Text()
 			log.Println("编剧:", screenWriter)
+		})
+
+		mainActor := content.Find("div#info > span").Slice(2, 3).
+			Find("span > span.attrs").Text()
+		log.Println("主演:", mainActor)
+
+		content.Find("div#info > span.p1").Each(func(i int, selection *goquery.Selection) {
+			log.Println("juqing:", selection.Text())
 		})
 
 		// 剧情获取有多个span,个数不确定,最少为两个最后一个为 @豆瓣,不需要,remove,取最后一个的全部详情
