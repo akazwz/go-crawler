@@ -26,7 +26,6 @@ func parseBookDetail(c *colly.Collector, href string) {
 		}
 
 		_ = content.Find("div#info").Find("span.pl").First().NextAll().Text()
-		content.Find("div#info").Find("span").First().Remove()
 		infoText := content.Find("div#info").Text()
 		infoText = strings.TrimSpace(infoText)
 		infoText = strings.ReplaceAll(infoText, "\n", "")
