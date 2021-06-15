@@ -22,5 +22,6 @@ func main() {
 	// examples.ScraperServer()
 	// examples.URLFilter()
 	// real_life_examples.CryptocoinsMarketCapacity()
-	douban.Movies()
+	// douban.Movies()
+	douban.Books()
 }
