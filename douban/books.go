@@ -31,9 +31,21 @@ func parseBookDetail(c *colly.Collector, href string) {
 		infoText = strings.TrimSpace(infoText)
 		infoText = strings.ReplaceAll(infoText, "\n", "")
 
-		html, err := content.Find("span.pl").Last().Html()
-		if err != nil {
-			log.Fatal(err)
+		// 用空格分割字符串
+		split := strings.Split(infoText, "              ")
+
+		// 定义一个新切片
+		var info = make([]string, 0)
+
+		for _, s := range split {
+			s = strings.TrimSpace(s)
+			// 去除空格后,长度大于一的放入新切片,得到图书信息
+			if len(s) > 1 {
+				info = append(info, s)
+			}
+		}
+		for _, s := range info {
+			log.Println("this is s", s)
 		}
 
 		log.Println(
@@ -41,7 +53,7 @@ func parseBookDetail(c *colly.Collector, href string) {
 			"\n书名:", bookName,
 			"\n图书封面:", bookImg,
 			"\ninfoText:", infoText,
-			"\nsplit:", html,
+			"\nsplit:", split,
 		)
 	})
 
