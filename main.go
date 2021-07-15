@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/akazwz/go-crawler/douban"
+	"github.com/akazwz/go-crawler/weibo"
 )
 
 func main() {
@@ -23,5 +23,6 @@ func main() {
 	// examples.URLFilter()
 	// real_life_examples.CryptocoinsMarketCapacity()
 	// douban.Movies()
-	douban.Books()
+	// douban.Books()
+	weibo.HotSearch()
 }
