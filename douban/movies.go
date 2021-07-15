@@ -2,6 +2,7 @@ package douban
 
 import (
 	"github.com/PuerkitoBio/goquery"
+	"github.com/akazwz/go-crawler/utils"
 	"github.com/gocolly/colly"
 	"log"
 	"strings"
@@ -35,34 +36,10 @@ func parseMovieDetail(c *colly.Collector, href string) {
 		rateSum := content.Find("div.rating_right > div.rating_sum > a > span").Text() // 电影评价人数
 
 		// 电影详情
-		info := content.Find("div#info")
-		infoText := info.Text()
-		director := processInfo(infoText, "导演")
-		scriptWriter := processInfo(infoText, "编剧")
-		mainActors := processInfo(infoText, "主演")
-		region := processInfo(infoText, "制片国家/地区")
-		languages := processInfo(infoText, "语言")
-		date := processInfo(infoText, "上映日期")
-		long := processInfo(infoText, "片长")
-		anotherName := processInfo(infoText, "又名")
-		IMDb := processInfo(infoText, "IMDb")
-		log.Println(
-			"\n排名:", rangeNo, "\n电影名:", movieName, "\n年份:", year, "\n电影海报:", moviePost, "\n剧情简介:", introduction,
-			"\n导演:", director, "\n编剧:", scriptWriter, "\n主演:", mainActors,
-			"\n制片国家/地区:", region, "\n语言:", languages, "\n上映日期:", date, "\n片长:", long,
-			"\n又名:", anotherName, "\nIMDb:", IMDb,
-			"\n评分:", rate, "\n总评价人数:", rateSum,
-			"\n---------------------------------------------------------",
-		)
-
-		// 获取演职员
-		/*ul := content.Find("div#celebrities > ul")
-		log.Println("演职员:")
-		ul.Find("li").Each(func(i int, selection *goquery.Selection) {
-			name := selection.Find("span.name > a").Text()
-			role := selection.Find("span.role").Text()
-			log.Println("\n姓名:", name, "\n角色:", role)
-		})*/
+		/*info := content.Find("div#info")
+		infoText := info.Text()*/
+		record := []string{rangeNo, movieName, moviePost, rate, rateSum}
+		utils.WriteCSV("movie-top-250.csv", record)
 	})
 
 	err := c.Visit(href)
@@ -71,57 +48,12 @@ func parseMovieDetail(c *colly.Collector, href string) {
 	}
 }
 
-// 处理电影详情,传入电影详情text,和需要获取的名称,比如导演,返回相对应的值
-func processInfo(infoText, key string) string {
-	split := strings.Split(infoText, ":")
-	var splitStr string
-	switch key {
-	case "导演":
-		key = "编剧"
-		splitStr = split[1]
-	case "编剧":
-		key = "主演"
-		splitStr = split[2]
-	case "主演":
-		key = "类型"
-		splitStr = split[3]
-	case "类型":
-		key = "制片国家/地区"
-		splitStr = split[4]
-	case "制片国家/地区":
-		key = "语言"
-		splitStr = split[5]
-	case "语言":
-		key = "上映日期"
-		splitStr = split[6]
-	case "上映日期":
-		key = "片长"
-		splitStr = split[7]
-	case "片长":
-		key = "又名"
-		splitStr = split[8]
-	case "又名":
-		key = "IMDb"
-		splitStr = split[9]
-	case "IMDb":
-		key = ""
-		splitStr = split[10]
-	default:
-		log.Fatal("key有误!")
-	}
-
-	str := strings.ReplaceAll(splitStr, key, "")
-	str = strings.ReplaceAll(str, "\n", "")
-	str = strings.TrimSpace(str)
-	return str
-}
-
 func Movies() {
 	c := colly.NewCollector()
-	c.UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36"
+	c.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.67"
 	err := c.Limit(&colly.LimitRule{
 		DomainGlob:  "*",
-		RandomDelay: 5 * time.Second,
+		RandomDelay: 10 * time.Second,
 	})
 	if err != nil {
 		log.Fatal("设置频率限制出错:", err)

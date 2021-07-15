@@ -1,41 +1,20 @@
 package weibo
 
 import (
-	"encoding/csv"
 	"github.com/PuerkitoBio/goquery"
+	"github.com/akazwz/go-crawler/utils"
 	"github.com/gocolly/colly"
 	"log"
-	"os"
 	"strconv"
 )
-
-func WriteCSV(str []string) {
-	file, err := os.OpenFile("hot-search.csv", os.O_RDWR|os.O_APPEND|os.O_CREATE, 0666)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer func(file *os.File) {
-		err := file.Close()
-		if err != nil {
-			log.Fatal(err)
-		}
-	}(file)
-
-	writer := csv.NewWriter(file)
-	err = writer.Write(str)
-	if err != nil {
-		log.Fatal(err)
-	}
-	writer.Flush()
-}
 
 func HotSearchDetails(c *colly.Collector, link string, rank string, content string, hot string) {
 	c = c.Clone()
 	// 获取微博热搜详情,得到导语
 	c.OnHTML("div#pl_feedlist_index", func(e *colly.HTMLElement) {
 		topicLead := e.DOM.Find("div.card-wrap >div.card.card-topic-lead.s-pg16 >p").Text()
-		str := []string{rank, content, hot, topicLead, link}
-		WriteCSV(str)
+		record := []string{rank, content, hot, topicLead, link}
+		utils.WriteCSV("hot-search.csv", record)
 	})
 
 	err := c.Visit(link)
