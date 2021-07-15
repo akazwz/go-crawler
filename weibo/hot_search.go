@@ -34,7 +34,7 @@ func HotSearchDetails(c *colly.Collector, link string, rank string, content stri
 	// 获取微博热搜详情,得到导语
 	c.OnHTML("div#pl_feedlist_index", func(e *colly.HTMLElement) {
 		topicLead := e.DOM.Find("div.card-wrap >div.card.card-topic-lead.s-pg16 >p").Text()
-		str := []string{rank, link, content, hot, topicLead}
+		str := []string{rank, content, hot, topicLead, link}
 		WriteCSV(str)
 	})
 
