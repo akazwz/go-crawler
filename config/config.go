@@ -1,5 +1,8 @@
 package config
 
 type Conf struct {
-	Token string `yaml:"token"`
+	URL    string `yaml:"url"`
+	Token  string `yaml:"token"`
+	Bucket string `yaml:"bucket"`
+	Org    string `yaml:"org"`
 }
