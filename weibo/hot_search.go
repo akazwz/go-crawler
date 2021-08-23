@@ -2,7 +2,7 @@ package weibo
 
 import (
 	"github.com/PuerkitoBio/goquery"
-	"github.com/akazwz/go-crawler/utils"
+	"github.com/akazwz/go-crawler/utils/influx"
 	"github.com/gocolly/colly"
 	"log"
 	"strconv"
@@ -13,8 +13,19 @@ func HotSearchDetails(c *colly.Collector, link string, rank string, content stri
 	// 获取微博热搜详情,得到导语
 	c.OnHTML("div#pl_feedlist_index", func(e *colly.HTMLElement) {
 		topicLead := e.DOM.Find("div.card-wrap >div.card.card-topic-lead.s-pg16 >p").Text()
-		record := []string{rank, content, hot, topicLead, link}
-		utils.WriteCSV("hot-search.csv", record)
+
+		tags := map[string]string{}
+		fields := map[string]interface{}{}
+		tags["rank"] = rank
+		fields["content"] = content
+		fields["hot"] = hot
+		fields["topic_lead"] = topicLead
+		fields["link"] = link
+
+		err := influx.Write("hot_search", tags, fields)
+		if err != nil {
+			log.Fatal("influx error:", err)
+		}
 	})
 
 	err := c.Visit(link)

@@ -2,7 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/akazwz/go-crawler/douban"
+	"github.com/akazwz/go-crawler/global"
+	"github.com/akazwz/go-crawler/initialize"
+	"github.com/akazwz/go-crawler/weibo"
+	"github.com/jasonlvhit/gocron"
+	"log"
 )
 
 func main() {
@@ -22,7 +26,19 @@ func main() {
 	// examples.ScraperServer()
 	// examples.URLFilter()
 	// real_life_examples.CryptocoinsMarketCapacity()
-	douban.Movies()
+	// douban.Movies()
 	// douban.Books()
-	// weibo.HotSearch()
+
+	global.VP = initialize.InitViper()
+	if global.VP == nil {
+		fmt.Println("配置文件初始化失败")
+	}
+	fmt.Println(global.CFG.Token)
+
+	err := gocron.Every(15).Minute().Do(weibo.HotSearch)
+	if err != nil {
+		log.Fatal("go cron error:", err)
+	}
+
+	<-gocron.Start()
 }
