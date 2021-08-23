@@ -1,6 +1,7 @@
 package weibo
 
 import (
+	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/akazwz/go-crawler/utils/influx"
 	"github.com/gocolly/colly"
@@ -16,13 +17,17 @@ func HotSearchDetails(c *colly.Collector, link string, rank string, content stri
 
 		tags := map[string]string{}
 		fields := map[string]interface{}{}
-		tags["rank"] = rank
+		rankInt, err := strconv.Atoi(rank)
+		if err != nil {
+			log.Fatal("string to int error")
+		}
+		tags["rank"] = fmt.Sprintf("%01d", rankInt)
 		fields["content"] = content
 		fields["hot"] = hot
 		fields["topic_lead"] = topicLead
 		fields["link"] = link
 
-		err := influx.Write("hot_search", tags, fields)
+		err = influx.Write("hot_search", tags, fields)
 		if err != nil {
 			log.Fatal("influx error:", err)
 		}
