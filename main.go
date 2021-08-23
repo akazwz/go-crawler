@@ -33,9 +33,8 @@ func main() {
 	if global.VP == nil {
 		fmt.Println("配置文件初始化失败")
 	}
-	fmt.Println(global.CFG.Token)
 
-	err := gocron.Every(15).Minute().Do(weibo.HotSearch)
+	err := gocron.Every(15).Minutes().Do(weibo.HotSearch)
 	if err != nil {
 		log.Fatal("go cron error:", err)
 	}

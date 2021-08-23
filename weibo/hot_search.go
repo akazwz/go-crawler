@@ -39,7 +39,6 @@ func HotSearch() {
 	url := "https://s.weibo.com/top/summary/"
 
 	c.OnRequest(func(r *colly.Request) {
-		log.Println("visiting: ", r.URL)
 	})
 
 	c.OnHTML("div#pl_top_realtimehot >table >tbody", func(e *colly.HTMLElement) {
