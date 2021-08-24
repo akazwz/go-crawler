@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/akazwz/go-crawler/utils/influx"
+	"github.com/akazwz/go-wkhtmltopdf/image"
+	"github.com/akazwz/go-wkhtmltopdf/pdf"
 	"github.com/gocolly/colly"
 	"log"
 	"strconv"
@@ -43,6 +45,28 @@ func HotSearch() {
 	c := colly.NewCollector()
 	url := "https://s.weibo.com/top/summary/"
 
+	err, pdfFile := pdf.GeneratePdfFromURL(url, "public/")
+	if err != nil {
+		log.Fatalln("generate pdf error:", err)
+	}
+
+	err, imageFile := image.GenerateImageFromURL(url, "public/")
+	if err != nil {
+		log.Fatalln("generate image error:", err)
+	}
+
+	tags := map[string]string{}
+	fields := map[string]interface{}{}
+
+	tags["rank"] = "00"
+	fields["pdf_file"] = pdfFile
+	fields["image_file"] = imageFile
+
+	err = influx.Write("hot_search", tags, fields)
+	if err != nil {
+		log.Fatal("influx error:", err)
+	}
+
 	c.OnRequest(func(r *colly.Request) {
 	})
 
@@ -70,8 +94,8 @@ func HotSearch() {
 		})
 	})
 
-	err := c.Visit(url)
+	err = c.Visit(url)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalln(err)
 	}
 }
