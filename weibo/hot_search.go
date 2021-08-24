@@ -23,7 +23,7 @@ func HotSearchDetails(c *colly.Collector, link string, rank string, content stri
 		if err != nil {
 			log.Fatal("string to int error")
 		}
-		tags["rank"] = fmt.Sprintf("%01d", rankInt)
+		tags["rank"] = fmt.Sprintf("%02d", rankInt)
 		fields["content"] = content
 		fields["hot"] = hot
 		fields["topic_lead"] = topicLead
