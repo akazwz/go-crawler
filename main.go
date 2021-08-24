@@ -2,42 +2,25 @@ package main
 
 import (
 	"fmt"
-	"github.com/akazwz/go-crawler/global"
-	"github.com/akazwz/go-crawler/initialize"
 	"github.com/akazwz/go-crawler/weibo"
-	"github.com/jasonlvhit/gocron"
+	"github.com/robfig/cron/v3"
 	"log"
+	"time"
 )
 
 func main() {
 	fmt.Println("Hello, Colly!")
-	// examples.Basic()
-	// examples.ErrorHandling()
-	// examples.Login()
-	// examples.MaxDepth()
-	// examples.Multipart()
-	// examples.Parallel()
-	// examples.ProxySwitcher()
-	// examples.Queue()
-	// examples.RandomDelay()
-	// examples.RateLimit()
-	// examples.RedisBackend()
-	// examples.RequestContext()
-	// examples.ScraperServer()
-	// examples.URLFilter()
-	// real_life_examples.CryptocoinsMarketCapacity()
-	// douban.Movies()
-	// douban.Books()
 
-	global.VP = initialize.InitViper()
-	if global.VP == nil {
-		fmt.Println("配置文件初始化失败")
-	}
-
-	err := gocron.Every(15).Minutes().Do(weibo.HotSearch)
+	location, err := time.LoadLocation("Asia/Shanghai")
 	if err != nil {
-		log.Fatal("go cron error:", err)
+		log.Fatal("时区加载失败")
 	}
 
-	<-gocron.Start()
+	c := cron.New(cron.WithLocation(location))
+	_, err = c.AddFunc("0,15,30,45 * * * * ", weibo.HotSearch)
+	if err != nil {
+		log.Fatal("定时任务添加失败", err)
+	}
+	c.Run()
+	c.Start()
 }
