@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"github.com/akazwz/go-crawler/global"
+	"github.com/akazwz/go-crawler/initialize"
 	"github.com/akazwz/go-crawler/weibo"
 	"github.com/robfig/cron/v3"
 	"log"
@@ -10,6 +12,11 @@ import (
 
 func main() {
 	fmt.Println("Hello, Colly!")
+
+	global.VP = initialize.InitViper()
+	if global.VP == nil {
+		fmt.Println("配置文件初始化失败")
+	}
 
 	location, err := time.LoadLocation("Asia/Shanghai")
 	if err != nil {
