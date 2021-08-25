@@ -4,7 +4,7 @@ go 1.16
 
 require (
 	github.com/PuerkitoBio/goquery v1.7.1
-	github.com/akazwz/go-wkhtmltopdf v0.0.0-20210824090548-a2a9b87074b0
+	github.com/akazwz/go-wkhtmltopdf v0.0.0-20210825004751-79ab356c2457
 	github.com/andybalholm/cascadia v1.2.0 // indirect
 	github.com/antchfx/htmlquery v1.2.3 // indirect
 	github.com/antchfx/xmlquery v1.3.6 // indirect

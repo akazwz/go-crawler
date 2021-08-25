@@ -45,14 +45,28 @@ func HotSearch() {
 	c := colly.NewCollector()
 	url := "https://s.weibo.com/top/summary/"
 
-	err, pdfFile := pdf.GeneratePdfFromURL(url, "public/")
-	if err != nil {
-		log.Fatalln("generate pdf error:", err)
+	var pdfFile string
+	// 执行多次
+	for i := 0; i < 3; i++ {
+		err, file := pdf.GeneratePdfFromURL(url, "public/")
+		if err != nil {
+			log.Println("generate pdf error:", err)
+		} else {
+			pdfFile = file
+			break
+		}
 	}
 
-	err, imageFile := image.GenerateImageFromURL(url, "public/")
-	if err != nil {
-		log.Fatalln("generate image error:", err)
+	var imageFile string
+	// 执行多次
+	for i := 0; i < 3; i++ {
+		err, img := image.GenerateImageFromURL(url, "public/")
+		if err != nil {
+			log.Println("generate image error:", err)
+		} else {
+			imageFile = img
+			break
+		}
 	}
 
 	tags := map[string]string{}
@@ -62,9 +76,9 @@ func HotSearch() {
 	fields["pdf_file"] = pdfFile
 	fields["image_file"] = imageFile
 
-	err = influx.Write("hot_search", tags, fields)
+	err := influx.Write("hot_search", tags, fields)
 	if err != nil {
-		log.Fatal("influx error:", err)
+		log.Println("influx error:", err)
 	}
 
 	c.OnRequest(func(r *colly.Request) {
@@ -96,6 +110,6 @@ func HotSearch() {
 
 	err = c.Visit(url)
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
 	}
 }

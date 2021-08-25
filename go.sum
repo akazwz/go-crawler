@@ -58,6 +58,8 @@ github.com/akazwz/go-wkhtmltopdf v0.0.0-20210824082902-f10963cbbeec h1:tmwuT6UTy
 github.com/akazwz/go-wkhtmltopdf v0.0.0-20210824082902-f10963cbbeec/go.mod h1:eWsGfKrUqZjOq4stsx6ABA23gklDo0vKE20CKRwpe9Y=
 github.com/akazwz/go-wkhtmltopdf v0.0.0-20210824090548-a2a9b87074b0 h1:3ekGlAabbNWmrzeY1hU3Q7ulc+Rlqe0Kvp/kyokljvI=
 github.com/akazwz/go-wkhtmltopdf v0.0.0-20210824090548-a2a9b87074b0/go.mod h1:eWsGfKrUqZjOq4stsx6ABA23gklDo0vKE20CKRwpe9Y=
+github.com/akazwz/go-wkhtmltopdf v0.0.0-20210825004751-79ab356c2457 h1:4VGHehZagRfUmJ57BpksMqLUhBSowtabwBQ553DD+8I=
+github.com/akazwz/go-wkhtmltopdf v0.0.0-20210825004751-79ab356c2457/go.mod h1:eWsGfKrUqZjOq4stsx6ABA23gklDo0vKE20CKRwpe9Y=
 github.com/andybalholm/cascadia v1.1.0/go.mod h1:GsXiBklL0woXo1j/WYWtSYYC4ouU9PqHO0sqidkEA4Y=
 github.com/andybalholm/cascadia v1.2.0 h1:vuRCkM5Ozh/BfmsaTm26kbjm0mIOM3yS5Ek/F5h18aE=
 github.com/andybalholm/cascadia v1.2.0/go.mod h1:YCyR8vOZT9aZ1CHEd8ap0gMVm2aFgxBp0T0eFw1RUQY=
