@@ -9,9 +9,10 @@ import (
 	"github.com/gocolly/colly"
 	"log"
 	"strconv"
+	"time"
 )
 
-func HotSearchDetails(c *colly.Collector, link string, rank string, content string, hot string) {
+func HotSearchDetails(c *colly.Collector, link string, rank string, content string, hot string, t time.Time) {
 	c = c.Clone()
 	// 获取微博热搜详情,得到导语
 	c.OnHTML("div#pl_feedlist_index", func(e *colly.HTMLElement) {
@@ -29,7 +30,7 @@ func HotSearchDetails(c *colly.Collector, link string, rank string, content stri
 		fields["topic_lead"] = topicLead
 		fields["link"] = link
 
-		err = influx.Write("hot_search", tags, fields)
+		err = influx.Write("hot_search", tags, fields, t)
 		if err != nil {
 			log.Fatal("influx error:", err)
 		}
@@ -76,7 +77,9 @@ func HotSearch() {
 	fields["pdf_file"] = pdfFile
 	fields["image_file"] = imageFile
 
-	err := influx.Write("hot_search", tags, fields)
+	// 一次热搜应该为同一时间
+	t := time.Now()
+	err := influx.Write("hot_search", tags, fields, t)
 	if err != nil {
 		log.Println("influx error:", err)
 	}
@@ -102,7 +105,7 @@ func HotSearch() {
 				// 热搜链接
 				link, exists := selection.Find("td.td-02 >a").Attr("href")
 				if exists {
-					HotSearchDetails(c, "https://s.weibo.com"+link, rank, content, hot)
+					HotSearchDetails(c, "https://s.weibo.com"+link, rank, content, hot, t)
 				}
 			}
 		})

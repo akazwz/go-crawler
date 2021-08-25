@@ -7,11 +7,11 @@ import (
 	"time"
 )
 
-func Write(measurement string, tags map[string]string, fields map[string]interface{}) (err error) {
+func Write(measurement string, tags map[string]string, fields map[string]interface{}, t time.Time) (err error) {
 	client := influxdb2.NewClient(global.CFG.URL, global.CFG.Token)
 	// always close client at the end
 	defer client.Close()
-	p := influxdb2.NewPoint(measurement, tags, fields, time.Now())
+	p := influxdb2.NewPoint(measurement, tags, fields, t)
 	writeApi := client.WriteAPI(global.CFG.Org, global.CFG.Bucket)
 	writeApi.WritePoint(p)
 	writeApi.Flush()
