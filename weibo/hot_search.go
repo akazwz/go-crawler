@@ -72,7 +72,7 @@ func HotSearch() {
 		})
 	})
 
-	err = c.Visit(url)
+	err := c.Visit(url)
 	if err != nil {
 		log.Println(err)
 	}
