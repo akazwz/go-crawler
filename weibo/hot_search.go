@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/akazwz/go-crawler/utils/influx"
-	"github.com/akazwz/go-wkhtmltopdf/image"
-	"github.com/akazwz/go-wkhtmltopdf/pdf"
 	"github.com/gocolly/colly"
 	"log"
 	"strconv"
