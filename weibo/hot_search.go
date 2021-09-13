@@ -8,7 +8,10 @@ import (
 	"github.com/akazwz/go-wkhtmltopdf/pdf"
 	"github.com/gocolly/colly"
 	"log"
+	"net"
+	"net/http"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -44,6 +47,17 @@ func HotSearchDetails(c *colly.Collector, link string, rank string, content stri
 
 func HotSearch() {
 	c := colly.NewCollector()
+	c.WithTransport(&http.Transport{
+		Proxy: http.ProxyFromEnvironment,
+		DialContext: (&net.Dialer{
+			Timeout:   30 * time.Second,
+			KeepAlive: 30 * time.Second,
+		}).DialContext,
+		MaxIdleConns:          100,
+		IdleConnTimeout:       90 * time.Second,
+		TLSHandshakeTimeout:   10 * time.Second,
+		ExpectContinueTimeout: 1 * time.Second,
+	})
 	url := "https://s.weibo.com/top/summary/"
 
 	var pdfFile string
@@ -105,7 +119,10 @@ func HotSearch() {
 				// 热搜链接
 				link, exists := selection.Find("td.td-02 >a").Attr("href")
 				if exists {
-					HotSearchDetails(c, "https://s.weibo.com"+link, rank, content, hot, t)
+					// 以 / 开头的为有效链接
+					if strings.HasPrefix(link, "/") {
+						HotSearchDetails(c, "https://s.weibo.com"+link, rank, content, hot, t)
+					}
 				}
 			}
 		})
