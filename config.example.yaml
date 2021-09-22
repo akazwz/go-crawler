@@ -2,3 +2,5 @@ url: your influxdb url
 token: your influxdb token
 bucket: weibo
 org: zwz
+secretId: xxx
+secretKey: xxx

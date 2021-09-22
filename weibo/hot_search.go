@@ -114,6 +114,15 @@ func HotSearch() {
 			if err == nil {
 				// 热搜内容
 				content := selection.Find("td.td-02 >a").Text()
+				/*keywords := make([]string, 2)
+				keywords[0] = "iPhone"
+				keywords[1] = "姐姐"
+				for i := 0; i < len(keywords); i++ {
+					if strings.Contains(content, keywords[i]) {
+						log.Println(keywords[i], "上热搜了")
+						//notify.SendMessage()
+					}
+				}*/
 				// 热度
 				hot := selection.Find("td.td-02 >span").Text()
 				// 热搜链接

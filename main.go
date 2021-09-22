@@ -24,7 +24,7 @@ func main() {
 	}
 
 	c := cron.New(cron.WithLocation(location))
-	_, err = c.AddFunc("0,15,30,45 * * * * ", weibo.HotSearch)
+	_, err = c.AddFunc("* * * * * ", weibo.HotSearch)
 	if err != nil {
 		log.Fatal("定时任务添加失败", err)
 	}
