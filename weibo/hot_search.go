@@ -14,6 +14,7 @@ import (
 )
 
 func HotSearchDetails(c *colly.Collector, link string, rank string, content string, hot string, t time.Time) {
+	log.Println("开始爬取详情")
 	c = c.Clone()
 	// 获取微博热搜详情,得到导语
 	c.OnHTML("div#pl_feedlist_index", func(e *colly.HTMLElement) {
@@ -35,8 +36,8 @@ func HotSearchDetails(c *colly.Collector, link string, rank string, content stri
 		if err != nil {
 			log.Fatal("influx error:", err)
 		}
-	})
 
+	})
 	err := c.Visit(link)
 	if err != nil {
 		log.Fatal(err)
@@ -75,8 +76,12 @@ func HotSearch() {
 	c.OnRequest(func(r *colly.Request) {
 	})
 
-	c.OnHTML("div#pl_top_realtimehot >table >tbody", func(e *colly.HTMLElement) {
+	log.Println("开始")
+
+	c.OnHTML("body", func(e *colly.HTMLElement) {
+		log.Println("开始爬取热搜")
 		e.DOM.Find("tr").Each(func(i int, selection *goquery.Selection) {
+			log.Println("找到热搜内容")
 			if i == 0 {
 				// 不是真正热搜内容
 			}
@@ -101,9 +106,11 @@ func HotSearch() {
 				hot := selection.Find("td.td-02 >span").Text()
 				// 热搜链接
 				link, exists := selection.Find("td.td-02 >a").Attr("href")
+				log.Println("link:", link)
 				if exists {
 					// 以 / 开头的为有效链接
 					if strings.HasPrefix(link, "/") {
+						log.Println("有效链接:", "https://s.weibo.com"+link)
 						HotSearchDetails(c, "https://s.weibo.com"+link, rank, content, hot, t)
 					}
 				}
