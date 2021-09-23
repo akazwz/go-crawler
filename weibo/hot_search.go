@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/akazwz/go-crawler/utils/influx"
-	"github.com/akazwz/go-wkhtmltopdf/image"
-	"github.com/akazwz/go-wkhtmltopdf/pdf"
 	"github.com/gocolly/colly"
 	"log"
 	"net"
@@ -60,36 +58,12 @@ func HotSearch() {
 	})
 	url := "https://s.weibo.com/top/summary/"
 
-	var pdfFile string
-	// 执行多次
-	for i := 0; i < 3; i++ {
-		err, file := pdf.GeneratePdfFromURL(url, "public/")
-		if err != nil {
-			log.Println("generate pdf error:", err)
-		} else {
-			pdfFile = file
-			break
-		}
-	}
-
-	var imageFile string
-	// 执行多次
-	for i := 0; i < 3; i++ {
-		err, img := image.GenerateImageFromURL(url, "public/")
-		if err != nil {
-			log.Println("generate image error:", err)
-		} else {
-			imageFile = img
-			break
-		}
-	}
-
 	tags := map[string]string{}
 	fields := map[string]interface{}{}
 
 	tags["rank"] = "00"
-	fields["pdf_file"] = pdfFile
-	fields["image_file"] = imageFile
+	fields["pdf_file"] = "pdf"
+	fields["image_file"] = "image"
 
 	// 一次热搜应该为同一时间
 	t := time.Now()
